@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Colors */
+    --primary-color: #2c1c14;
+    --dark-color: #311e06;
+    --light-color: #d1c1a5;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  @font-face {
+    font-family: "papyrus";
+    src: url("/fonts/papyrus.ttf");
+  }
+
+  body {
+    font-family: "papyrus", sans-serif;
+    line-height: 1.6;
+    font-size: 16px;
+    color: var(--primary-color);
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  i {
+    cursor: pointer;
+    transition: 0.5s;
+  }
+}
+
+@layer components {
+}
+
+@layer utilities {
+}

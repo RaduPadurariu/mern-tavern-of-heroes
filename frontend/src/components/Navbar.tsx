@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AiOutlineLogin } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
@@ -5,6 +6,18 @@ import { MdOutlineAccountBox } from "react-icons/md";
 import { Link } from "react-router";
 
 const Navbar = () => {
+  const [logo, setLogo] = useState(false);
+
+  const changeLogo = () => {
+    if (window.scrollY >= 50) {
+      setLogo(true);
+    } else {
+      setLogo(false);
+    }
+  };
+
+  window.addEventListener("scroll", changeLogo);
+
   return (
     <nav className="flex items-center justify-between py-[0.7rem] px-2 md:px-8 fixed z-10 w-full top-0 text-2xl font-bold  bg-(--primary-color)">
       <div className="flex items-center">
@@ -15,7 +28,9 @@ const Navbar = () => {
             <div className="w-2 h-3 bg-(--light-color) rounded-sm animate-[banner1_1.2s_ease_forwards]"></div>
             <div className="w-5 h-5 rounded-full border-[5px] border-(--light-color) animate-[banner1_1.2s_ease_forwards]"></div>
             <Link
-              className="w-[150px] md:w-[230px] h-[37px] md:h-[200px] absolute top-[52px] bg-[url('/images/logobg.png')] bg-center bg-cover animate-[banner1_1.2s_ease_forwards]"
+              className={`${
+                logo ? "md:w-[150px] md:h-[37px]" : "md:w-[230px] md:h-[200px] "
+              } w-[150px]  h-[37px]  absolute top-[52px] bg-[url('/images/logobg.png')] bg-center bg-cover animate-[banner1_1.2s_ease_forwards] transition-all duration-300 ease-in-out`}
               to="/"
             ></Link>
           </div>

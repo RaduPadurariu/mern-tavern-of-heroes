@@ -52,7 +52,7 @@ const Navbar = () => {
             className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out"
           >
             <BiEditAlt className="hidden md:block mr-1" />
-            <span className="text-sm sm:text-xl md:text-2xl">Posts</span>
+            <span className="text-sm sm:text-xl md:text-2xl">Gossips</span>
           </Link>
         </li>
         <li>

@@ -8,11 +8,11 @@ const LogIn = () => {
   return (
     <div className="tavern-container">
       <h1 className="text-3xl md:text-5xl leading-[1.2] mb-4 text-(--light-color) bg-(--primary-color) m-0.5 py-8 px-12 rounded-t-[5px]">
-        Sign in
+        Enter the Tavern
       </h1>
       <div className="py-6 px-12">
         <p className="text-2xl my-4 flex ">
-          <FaUserAlt /> <span className="ml-2">Sing Into your account</span>
+          <FaUserAlt /> <span className="ml-2">Sign in to your account</span>
         </p>
         <form className="" onSubmit={(e) => submitHandler(e)}>
           <div className="my-5">
@@ -37,11 +37,11 @@ const LogIn = () => {
             type="submit"
             className="text-(--light-color) bg-(--primary-color) text-xl py-1.5 px-5 border rounded-[5px] cursor-pointer hover:opacity-80 transition-all ease-in-out duration-300 "
           >
-            Login
+            Sign In
           </button>
         </form>
         <p className="my-4">
-          Don't have an account? <Link to="/register">Sign Up</Link>
+          Don&apos;t have an account? <Link to="/register">Sign Up</Link>
         </p>
       </div>
     </div>

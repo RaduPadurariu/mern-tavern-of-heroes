@@ -8,7 +8,7 @@ const SignUp = () => {
   return (
     <div className="tavern-container">
       <h1 className="text-3xl md:text-5xl leading-[1.2] mb-4 text-(--light-color) bg-(--primary-color) m-0.5 py-8 px-12 rounded-t-[5px]">
-        Sign Up
+        Join the Tavern
       </h1>
 
       <div className="py-6 px-12">
@@ -22,8 +22,7 @@ const SignUp = () => {
               placeholder="Name"
               name="name"
               className="block w-full p-1.5 text-lg border border-(--primary-color) rounded-[3px] bg-white inputFamily placeholder:text-[#777] focus:outline-(--primary-color)"
-
-              // required
+              required
             />
           </div>
           <div className="my-5">
@@ -32,11 +31,10 @@ const SignUp = () => {
               placeholder="Email Address"
               name="email"
               className="block w-full p-1.5 text-lg border border-(--primary-color) rounded-[3px] bg-white inputFamily placeholder:text-[#777] focus:outline-(--primary-color)"
-              // required
+              required
             />
             <small className="form-text">
-              This site uses Gravatar so if you want a profile image, use a
-              Gravatar email
+              Profile image is fetched automatically via Gravatar.
             </small>
           </div>
           <div className="my-5">
@@ -64,7 +62,7 @@ const SignUp = () => {
             type="submit"
             className="text-(--light-color) bg-(--primary-color) text-xl py-1.5 px-5 border rounded-[5px] cursor-pointer hover:opacity-80 transition-all ease-in-out duration-300 "
           >
-            Login
+            Sign Up
           </button>
         </form>
         <p className="my-4">

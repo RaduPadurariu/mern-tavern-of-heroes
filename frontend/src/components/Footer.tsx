@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <section className="text-center p-2.5">
+    <footer className="text-center p-2.5 z-2">
       <a
         href="https://radupadurariu.netlify.app"
         title="Contact - radupadurariu.netlify.app"
@@ -10,7 +10,7 @@ const Footer = () => {
       >
         @ 2025 Radu Padurariu. &nbsp;All rights reserved.
       </a>
-    </section>
+    </footer>
   );
 };
 

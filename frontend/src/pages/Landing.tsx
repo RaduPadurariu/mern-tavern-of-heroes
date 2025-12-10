@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 const Landing = () => {
   return (
-    <section className="flex items-center justify-center text-center text-(--light-color) w-full">
+    <section className="flex items-center justify-center text-center text-(--light-color) w-full pb-40">
       <div className="flex flex-col items-center justify-center">
         <Link
           to="/login"

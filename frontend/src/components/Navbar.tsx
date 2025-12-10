@@ -6,20 +6,24 @@ import { MdOutlineAccountBox } from "react-icons/md";
 import { Link } from "react-router";
 
 const Navbar = () => {
-  const [logo, setLogo] = useState(false);
+  const [nav, setNav] = useState(false);
 
-  const changeLogo = () => {
+  const changeNav = () => {
     if (window.scrollY >= 50) {
-      setLogo(true);
+      setNav(true);
     } else {
-      setLogo(false);
+      setNav(false);
     }
   };
 
-  window.addEventListener("scroll", changeLogo);
+  window.addEventListener("scroll", changeNav);
 
   return (
-    <nav className="flex items-center justify-between py-[0.7rem] px-2 md:px-8 fixed z-10 w-full top-0 text-2xl font-bold  bg-(--primary-color)">
+    <nav
+      className={`flex items-center justify-between py-[0.7rem] px-2 md:px-8 fixed z-10 w-full top-0 text-2xl font-bold transition-colors duration-300 ease-in-out ${
+        nav && "bg-(--secondary-color) "
+      }`}
+    >
       <div className="flex items-center">
         <div className="relative self-start mx-auto ml-[10vw] mr-[30px]">
           <div className="flex flex-col items-center justify-center absolute top-[-30px] pl-6">
@@ -29,7 +33,7 @@ const Navbar = () => {
             <div className="w-5 h-5 rounded-full border-[5px] border-(--light-color) animate-[banner1_1.2s_ease_forwards]"></div>
             <Link
               className={`${
-                logo ? "md:w-[150px] md:h-[37px]" : "md:w-[230px] md:h-[200px] "
+                nav ? "md:w-[150px] md:h-[37px]" : "md:w-[230px] md:h-[200px] "
               } w-[150px]  h-[37px]  absolute top-[52px] bg-[url('/images/logobg.png')] bg-center bg-cover animate-[banner1_1.2s_ease_forwards] transition-all duration-300 ease-in-out`}
               to="/"
             ></Link>
@@ -52,7 +56,7 @@ const Navbar = () => {
             className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out"
           >
             <BiEditAlt className="hidden md:block mr-1" />
-            <span className="text-sm sm:text-xl md:text-2xl">Gossips</span>
+            <span className="text-sm sm:text-xl md:text-2xl">Rumors</span>
           </Link>
         </li>
         <li>

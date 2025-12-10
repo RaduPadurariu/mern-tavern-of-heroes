@@ -1,5 +1,6 @@
 import { FaUserAlt } from "react-icons/fa";
 import { Link } from "react-router";
+import HeadTitle from "../components/HeadTitle";
 
 const LogIn = () => {
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -7,9 +8,7 @@ const LogIn = () => {
   };
   return (
     <div className="tavern-container">
-      <h1 className="text-3xl md:text-5xl leading-[1.2] mb-4 text-(--light-color) bg-(--primary-color) m-0.5 py-8 px-12 rounded-t-[5px]">
-        Enter the Tavern
-      </h1>
+      <HeadTitle title="Enter the Tavern" />
       <div className="py-6 px-12">
         <p className="text-2xl my-4 flex ">
           <FaUserAlt /> <span className="ml-2">Sign in to your account</span>
@@ -41,7 +40,7 @@ const LogIn = () => {
           </button>
         </form>
         <p className="my-4">
-          Don&apos;t have an account? <Link to="/register">Sign Up</Link>
+          Don&apos;t have an account? <Link to="/register">Sign up</Link>
         </p>
       </div>
     </div>

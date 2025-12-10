@@ -57,23 +57,23 @@ const Navbar = () => {
         </li>
         <li>
           <Link
-            to="/login"
-            className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out"
-          >
-            <AiOutlineLogin className="hidden md:block mr-1" />
-            <span className="text-sm sm:text-xl md:text-2xl whitespace-nowrap">
-              Log in
-            </span>
-          </Link>
-        </li>
-        <li>
-          <Link
             to="/register"
             className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out"
           >
             <MdOutlineAccountBox className="hidden md:block mr-1" />
             <span className="text-sm sm:text-xl md:text-2xl whitespace-nowrap">
               Sign up
+            </span>
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/login"
+            className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out"
+          >
+            <AiOutlineLogin className="hidden md:block mr-1" />
+            <span className="text-sm sm:text-xl md:text-2xl whitespace-nowrap">
+              Log in
             </span>
           </Link>
         </li>

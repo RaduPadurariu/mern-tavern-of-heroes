@@ -5,6 +5,7 @@ export const users = [
     nickname: "Padu",
     gender: "male",
     avatar: "/images/user.png",
+    class: "Warrior",
   },
   {
     id: 2,
@@ -12,6 +13,7 @@ export const users = [
     nickname: "Man",
     gender: "male",
     avatar: "/images/user.png",
+    class: "Ranger",
   },
   {
     id: 3,
@@ -19,5 +21,6 @@ export const users = [
     nickname: "Handicel",
     gender: "female",
     avatar: "/images/user.png",
+    class: "Mage",
   },
 ];

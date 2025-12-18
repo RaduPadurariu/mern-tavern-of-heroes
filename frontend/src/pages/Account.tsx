@@ -25,7 +25,7 @@ const Account = () => {
             </div>
           </Link> */}
           <Link
-            to="/edit-profile"
+            to="/account/edit-profile"
             className="text-(--light-color) inline-block bg-(--primary-color) px-[1.3rem] py-[0.4rem] text-base font-bold border-2 border-(--light-color) rounded-[5px] cursor-pointer mr-2 transition-opacity duration-300 ease-in outline-none hover:opacity-75"
           >
             <div className="flex">

@@ -1,22 +1,26 @@
-import { useState } from "react";
-import { AiOutlineLogin } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { AiOutlineLogin, AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { MdOutlineAccountBox } from "react-icons/md";
-import { Link } from "react-router";
+import { Form, Link } from "react-router";
+import { useTavernContext } from "../context/useContext";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
+  const { user } = useTavernContext();
 
-  const changeNav = () => {
-    if (window.scrollY >= 50) {
-      setNav(true);
-    } else {
-      setNav(false);
-    }
-  };
+  useEffect(() => {
+    const changeNav = () => {
+      setNav(window.scrollY >= 50);
+    };
 
-  window.addEventListener("scroll", changeNav);
+    window.addEventListener("scroll", changeNav);
+
+    return () => {
+      window.removeEventListener("scroll", changeNav);
+    };
+  }, []);
 
   return (
     <nav
@@ -43,7 +47,7 @@ const Navbar = () => {
       <ul className="flex items-center justify-center text-center">
         <li>
           <Link
-            to="/heroes"
+            to="/users"
             className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out "
           >
             <FiSearch className="hidden md:block mr-1" />{" "}
@@ -59,28 +63,60 @@ const Navbar = () => {
             <span className="text-sm sm:text-xl md:text-2xl">Rumors</span>
           </Link>
         </li>
-        <li>
-          <Link
-            to="/register"
-            className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out"
-          >
-            <MdOutlineAccountBox className="hidden md:block mr-1" />
-            <span className="text-sm sm:text-xl md:text-2xl whitespace-nowrap">
-              Sign up
-            </span>
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/login"
-            className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out"
-          >
-            <AiOutlineLogin className="hidden md:block mr-1" />
-            <span className="text-sm sm:text-xl md:text-2xl whitespace-nowrap">
-              Log in
-            </span>
-          </Link>
-        </li>
+        {!user && (
+          <>
+            <li>
+              <Link
+                to="/register"
+                className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out"
+              >
+                <MdOutlineAccountBox className="hidden md:block mr-1" />
+                <span className="text-sm sm:text-xl md:text-2xl whitespace-nowrap">
+                  Sign up
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/login"
+                className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out"
+              >
+                <AiOutlineLogin className="hidden md:block mr-1" />
+                <span className="text-sm sm:text-xl md:text-2xl whitespace-nowrap">
+                  Log in
+                </span>
+              </Link>
+            </li>
+          </>
+        )}
+        {user && (
+          <>
+            <li>
+              <Link
+                to="/account"
+                className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out"
+              >
+                <AiOutlineUser className="hidden md:block mr-1" />
+                <span className="text-sm sm:text-xl md:text-2xl whitespace-nowrap">
+                  Profile
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Form method="post">
+                <button
+                  type="submit"
+                  className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out cursor-pointer"
+                >
+                  <AiOutlineLogout className="hidden md:block mr-1" />
+                  <span className="text-sm sm:text-xl md:text-2xl whitespace-nowrap">
+                    Log out
+                  </span>
+                </button>
+              </Form>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );

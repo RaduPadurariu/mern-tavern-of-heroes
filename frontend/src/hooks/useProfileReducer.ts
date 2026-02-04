@@ -4,37 +4,37 @@ type State = {
   nickname: string;
   gender: string;
   heroClass: string;
-  isAfterSubmit: boolean;
-  submitStatus: boolean;
+  username: string;
+  email: string;
 };
 
 type Action =
   | { type: "SET_NICKNAME"; payload: string }
   | { type: "SET_GENDER"; payload: string }
   | { type: "SET_HERO_CLASS"; payload: string }
-  | { type: "IS_AFTER_SUBMIT"; payload: boolean }
-  | { type: "SUBMIT_STATUS"; payload: boolean };
+  | { type: "SET_USERNAME"; payload: string }
+  | { type: "SET_EMAIL"; payload: string };
 
 const initialValue = {
   nickname: "",
   gender: "",
   heroClass: "",
-  isAfterSubmit: false,
-  submitStatus: false,
+  username: "",
+  email: "",
 };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "SET_NICKNAME":
-      return { ...state, nickname: action.payload };
+      return { ...state, nickname: action.payload ?? "" };
     case "SET_GENDER":
-      return { ...state, gender: action.payload };
+      return { ...state, gender: action.payload ?? "" };
     case "SET_HERO_CLASS":
-      return { ...state, heroClass: action.payload };
-    case "IS_AFTER_SUBMIT":
-      return { ...state, isAfterSubmit: action.payload };
-    case "SUBMIT_STATUS":
-      return { ...state, submitStatus: action.payload };
+      return { ...state, heroClass: action.payload ?? "" };
+    case "SET_USERNAME":
+      return { ...state, username: action.payload ?? "" };
+    case "SET_EMAIL":
+      return { ...state, email: action.payload ?? "" };
     default:
       return state;
   }

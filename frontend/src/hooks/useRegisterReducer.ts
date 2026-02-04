@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 
 type State = {
-  name: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -9,14 +9,14 @@ type State = {
 };
 
 type Action =
-  | { type: "SET_NAME"; payload: string }
+  | { type: "SET_USERNAME"; payload: string }
   | { type: "SET_EMAIL"; payload: string }
   | { type: "SET_PASSWORD"; payload: string }
   | { type: "SET_CONFIRM_PASSWORD"; payload: string }
   | { type: "IS_AFTER_SUBMIT"; payload: boolean };
 
 const initialValue = {
-  name: "",
+  username: "",
   email: "",
   password: "",
   confirmPassword: "",
@@ -25,8 +25,8 @@ const initialValue = {
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case "SET_NAME":
-      return { ...state, name: action.payload };
+    case "SET_USERNAME":
+      return { ...state, username: action.payload };
     case "SET_EMAIL":
       return { ...state, email: action.payload };
     case "SET_PASSWORD":

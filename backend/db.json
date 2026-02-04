@@ -1,0 +1,32 @@
+{
+  "rumors": [
+    {
+      "id": 1,
+      "title": "Age of Mythology Retold at only 15$",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquet, odio a tincidunt porta, neque sapien bibendum ipsum, vitae laoreet sem massa ut nisl. Integer tristique libero ac sem finibus, non consequat mi consequat. Vestibulum ante ipsum primis.",
+      "user": "Radu",
+      "avatar": "/images/user.png",
+      "likes": 3,
+      "date": "2025-12-08"
+    },
+    {
+      "id": 2,
+      "title": "Pharaoh: A new era at discount on Steam",
+      "content": "Lorem ipsum ...",
+      "user": "Ionut",
+      "avatar": "/images/user.png",
+      "likes": 2,
+      "date": "2025-12-09"
+    },
+    {
+      "id": 3,
+      "title": "Diablo 2 best runeword for Paladin",
+      "content": "Lorem ipsum ...",
+      "user": "Hande",
+      "avatar": "/images/user.png",
+      "likes": 5,
+      "date": "2025-12-10"
+    }
+  ],
+  "heroes": []
+}

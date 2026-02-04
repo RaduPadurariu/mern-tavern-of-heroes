@@ -1,7 +1,17 @@
-import { Outlet, ScrollRestoration } from "react-router";
+import { Outlet, ScrollRestoration, useNavigation } from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useTavernContext } from "../context/useContext";
+import { useEffect } from "react";
 const RootLayout = () => {
+  const { refetchUser } = useTavernContext();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (navigation.state === "idle") {
+      refetchUser();
+    }
+  }, [navigation.state, refetchUser]);
   return (
     <main className="relative min-h-screen flex flex-col justify-between bg-(--secondary-color) overflow-auto tavern-bg ">
       <Navbar />

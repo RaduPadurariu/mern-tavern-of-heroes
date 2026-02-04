@@ -4,11 +4,11 @@ export function checkEmailSignIn(email: string) {
   const errors: string[] = [];
 
   if (email.trim().length === 0) {
-    errors.push("Email is required");
+    errors.push("Email is required.");
   } else {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      errors.push("Please enter a valid email address");
+      errors.push("Please enter a valid email address.");
     }
   }
 
@@ -19,7 +19,7 @@ export function checkPasswordSignIn(password: string) {
   const errors = [];
 
   if (password.length === 0) {
-    errors.push("Password is required");
+    errors.push("Password is required.");
   }
 
   return errors;
@@ -27,11 +27,11 @@ export function checkPasswordSignIn(password: string) {
 
 // Register
 
-export function checkNameSignUp(name: string) {
+export function checkUsernameSignUp(username: string) {
   const errors = [];
 
-  if (name.trim().length === 0) {
-    errors.push("Name is required");
+  if (username.trim().length === 0) {
+    errors.push("Username is required.");
   }
 
   return errors;
@@ -45,7 +45,7 @@ export function checkEmailSignUp(email: string) {
   } else {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      errors.push("Please enter a valid email address");
+      errors.push("Please enter a valid email address.");
     }
   }
 
@@ -55,15 +55,19 @@ export function checkEmailSignUp(email: string) {
 export function checkPasswordSignUp(password: string) {
   const errors = [];
 
-  if (
-    password.length < 8 ||
-    !/[a-z]/.test(password) ||
-    !/[A-Z]/.test(password) ||
-    !/[0-9]/.test(password)
-  ) {
-    errors.push(
-      "At least 8 characters, with uppercase, lowercase and a number."
-    );
+  if (!password) {
+    errors.push("Password is required.");
+  } else {
+    if (
+      password.length < 8 ||
+      !/[a-z]/.test(password) ||
+      !/[A-Z]/.test(password) ||
+      !/[0-9]/.test(password)
+    ) {
+      errors.push(
+        "At least 8 characters, with uppercase, lowercase and a number.",
+      );
+    }
   }
 
   return errors;
@@ -71,7 +75,7 @@ export function checkPasswordSignUp(password: string) {
 
 export function checkConfirmPasswordSignUp(
   password: string,
-  confirmPassword: string
+  confirmPassword: string,
 ) {
   const errors = [];
 
@@ -84,31 +88,53 @@ export function checkConfirmPasswordSignUp(
 
 // Edit Profile
 
-export function checkNickname(nickname: string) {
+// export function checkNickname(nickname: string) {
+//   const errors = [];
+
+//   if (nickname.trim().length === 0) {
+//     errors.push("Nickname is required");
+//   }
+
+//   return errors;
+// }
+
+// export function checkGender(gender: string) {
+//   const errors = [];
+
+//   if (gender.trim().length === 0) {
+//     errors.push("Gender is required");
+//   }
+
+//   return errors;
+// }
+
+// export function checkHeroClass(heroClass: string) {
+//   const errors = [];
+
+//   if (heroClass.trim().length === 0) {
+//     errors.push("Hero class is required");
+//   }
+
+//   return errors;
+// }
+
+// Post Rumors
+
+export function checkRumorTitle(title: string) {
   const errors = [];
 
-  if (nickname.trim().length === 0) {
-    errors.push("Nickname is required");
+  if (title.trim().length === 0) {
+    errors.push("Title is required. ");
   }
 
   return errors;
 }
 
-export function checkGender(gender: string) {
+export function checkRumorContent(content: string) {
   const errors = [];
 
-  if (gender.trim().length === 0) {
-    errors.push("Gender is required");
-  }
-
-  return errors;
-}
-
-export function checkHeroClass(heroClass: string) {
-  const errors = [];
-
-  if (heroClass.trim().length === 0) {
-    errors.push("Hero class is required");
+  if (content.trim().length === 0) {
+    errors.push("Content is required.");
   }
 
   return errors;

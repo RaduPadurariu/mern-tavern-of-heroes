@@ -68,10 +68,12 @@ router.delete("/me", authMiddleware, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    const isProd = process.env.NODE_ENV === "production";
+
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
+      sameSite: isProd ? "none" : "lax",
+      secure: isProd,
     });
 
     return res.status(204).send();

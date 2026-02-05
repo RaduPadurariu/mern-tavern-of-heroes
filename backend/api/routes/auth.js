@@ -4,6 +4,7 @@ import { loginSchema, registerSchema } from "../../schemas/auth.schema.js";
 import User from "../../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import md5 from "md5";
 
 const router = Router();
 
@@ -11,14 +12,19 @@ router.get("/me", authMiddleware, (req, res) => {
   res.json(req.user);
 });
 
+const isProd = process.env.NODE_ENV === "production";
+
+const cookieOptions = {
+  httpOnly: true,
+  sameSite: isProd ? "none" : "lax",
+  secure: isProd,
+};
 // LOGOUT
 
 router.post("/logout", (req, res) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-  });
+  const isProd = process.env.NODE_ENV === "production";
+
+  res.clearCookie("token", cookieOptions);
 
   return res.status(200).json({ message: "Logged out" });
 });
@@ -59,11 +65,7 @@ router.post("/login", async (req, res) => {
       expiresIn: "1d",
     });
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
-    });
+    res.cookie("token", token, cookieOptions);
 
     res.status(200).json({
       _id: user._id,
@@ -109,11 +111,16 @@ router.post("/", async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Gravatar
+    const emailHash = md5(email.trim().toLowerCase());
+    const avatar = `https://www.gravatar.com/avatar/${emailHash}?d=404&s=128`;
+
     // Create user
     const user = await User.create({
       username,
       email,
       password: hashedPassword,
+      avatar,
     });
 
     // JWT
@@ -122,11 +129,7 @@ router.post("/", async (req, res) => {
       expiresIn: "1d",
     });
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
-    });
+    res.cookie("token", token, cookieOptions);
 
     res.status(201).json({
       _id: user._id,

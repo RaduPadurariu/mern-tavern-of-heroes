@@ -13,7 +13,7 @@ const SingleUser = () => {
             <div className="flex flex-col md:flex-row items-center mt-4">
               <div className="w-full md:w-1/4 mb-4 md:mb-0">
                 <img
-                  src={`/images/${user.avatar}`}
+                  src={user.avatar}
                   alt="no-avatar"
                   className="rounded-lg max-w-[330px] w-full"
                 />

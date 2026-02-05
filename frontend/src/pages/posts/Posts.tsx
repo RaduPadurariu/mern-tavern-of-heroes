@@ -22,11 +22,15 @@ const Posts = () => {
             +
           </Link>
         </div>
-        <Pagination
-          itemsPerPage={8}
-          values={posts}
-          renderItem={(post) => <Post key={post._id} post={post} />}
-        />
+        {posts.length > 0 ? (
+          <Pagination
+            itemsPerPage={8}
+            values={posts}
+            renderItem={(post) => <Post key={post._id} post={post} />}
+          />
+        ) : (
+          <div className="ml-12">No posts found</div>
+        )}
       </div>
     </div>
   );

@@ -7,9 +7,12 @@ const User = ({ user }: { user: UserType }) => {
     <div className="flex flex-col md:flex-row items-center md:items-start m-5 bg-(--light-color) text-(--primary-color)">
       <div className="mt-4">
         <img
-          src={`/images/${user.avatar}`}
+          src={user.avatar}
           alt="no-avatar-img"
           className="rounded-full w-[75px] h-[75px]"
+          onError={(e) => {
+            e.currentTarget.src = "/images/user.png";
+          }}
         />
       </div>
 

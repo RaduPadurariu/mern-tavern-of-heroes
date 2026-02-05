@@ -9,9 +9,13 @@ export const TavernContextProvider = ({
   const [isLoading, setIsLoading] = useState(true);
 
   const refetchUser = useCallback(async () => {
-    const res = await fetch("/api/auth/me", {
-      credentials: "include",
-    });
+    // const res = await fetch("http://localhost:3000/api/auth/me",
+    const res = await fetch(
+      "https://mern-tavern-of-heroes.onrender.com/api/auth/me",
+      {
+        credentials: "include",
+      },
+    );
 
     if (!res.ok) {
       setUser(null);
@@ -25,9 +29,13 @@ export const TavernContextProvider = ({
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch("/api/auth/me", {
-          credentials: "include",
-        });
+        // const res = await fetch("http://localhost:3000/api/auth/me",
+        const res = await fetch(
+          "https://mern-tavern-of-heroes.onrender.com/api/auth/me",
+          {
+            credentials: "include",
+          },
+        );
 
         if (res.status === 401) {
           // not logged in → normal case

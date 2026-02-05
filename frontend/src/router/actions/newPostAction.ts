@@ -11,11 +11,20 @@ export async function newPostAction({ request }: ActionFunctionArgs) {
     content,
   };
 
-  const res = await fetch("/api/posts", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newPost),
-  });
+  // const res = await fetch("http://localhost:3000/api/posts",
+  const res = await fetch(
+    "https://mern-tavern-of-heroes.onrender.com/api/posts",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newPost),
+      credentials: "include",
+    },
+  );
+
+  if (res.status === 401) {
+    throw new Response("Not authenticated", { status: 401 });
+  }
 
   if (!res.ok) {
     throw new Response("Failed to create post", { status: 500 });

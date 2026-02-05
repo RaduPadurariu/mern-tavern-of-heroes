@@ -17,11 +17,14 @@ export async function editPostAction({ request, params }: ActionFunctionArgs) {
     content,
   };
 
-  const res = await fetch(`/api/posts/${postId}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updatedPost),
-  });
+  const res = await fetch(
+    `https://mern-tavern-of-heroes.onrender.com/api/posts/${postId}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedPost),
+    },
+  );
 
   if (!res.ok) {
     throw new Response("Failed to update post", { status: 500 });

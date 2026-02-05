@@ -24,6 +24,7 @@ import { guestLoader } from "./loaders/guestLoader";
 import { loginUserAction } from "./actions/loginUserAction";
 import { editUserAction } from "./actions/editUserAction";
 import { deleteUserAction } from "./actions/deleteUserAction";
+import AccountLayout from "../layouts/AccountLayout";
 
 export const router = createBrowserRouter([
   {
@@ -85,6 +86,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "account",
+        element: <AccountLayout />,
         action: deleteUserAction,
         children: [
           { index: true, element: <Account /> },

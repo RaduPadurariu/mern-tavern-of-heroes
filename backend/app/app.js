@@ -7,9 +7,24 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
+app.set("trust proxy", 1);
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://tavernofheroes.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );

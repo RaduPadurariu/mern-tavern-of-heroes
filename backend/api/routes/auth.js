@@ -16,8 +16,8 @@ router.get("/me", authMiddleware, (req, res) => {
 router.post("/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    secure: false,
   });
 
   return res.status(200).json({ message: "Logged out" });
@@ -61,8 +61,8 @@ router.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      secure: false,
     });
 
     res.status(200).json({
@@ -124,8 +124,8 @@ router.post("/", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      secure: false,
     });
 
     res.status(201).json({

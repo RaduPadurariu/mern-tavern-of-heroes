@@ -13,12 +13,15 @@ export async function registerUserAction({ request }: ActionFunctionArgs) {
     password,
   };
 
-  const res = await fetch("/api/auth", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newUser),
-    credentials: "include",
-  });
+  const res = await fetch(
+    "https://mern-tavern-of-heroes.onrender.com/api/auth",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newUser),
+      credentials: "include",
+    },
+  );
 
   if (!res.ok) {
     const errorData = await res.json();

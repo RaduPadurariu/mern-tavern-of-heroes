@@ -11,11 +11,14 @@ export async function newPostAction({ request }: ActionFunctionArgs) {
     content,
   };
 
-  const res = await fetch("/api/posts", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newPost),
-  });
+  const res = await fetch(
+    "https://mern-tavern-of-heroes.onrender.com/api/posts",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newPost),
+    },
+  );
 
   if (!res.ok) {
     throw new Response("Failed to create post", { status: 500 });

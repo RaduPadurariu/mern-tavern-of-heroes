@@ -6,14 +6,17 @@ export async function loginUserAction({ request }: ActionFunctionArgs) {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
 
-  const res = await fetch("/api/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const res = await fetch(
+    "https://mern-tavern-of-heroes.onrender.com/api/auth/login",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
     },
-    credentials: "include",
-    body: JSON.stringify({ email, password }),
-  });
+  );
 
   if (!res.ok) {
     const errorData = await res.json();

@@ -70,8 +70,8 @@ router.delete("/me", authMiddleware, async (req, res) => {
 
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      secure: false,
     });
 
     return res.status(204).send();

@@ -19,12 +19,15 @@ export async function editUserAction({ request }: ActionFunctionArgs) {
     updatedUser.gender = genderRaw;
   }
 
-  const res = await fetch(`/api/users/me`, {
-    method: "PATCH",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updatedUser),
-  });
+  const res = await fetch(
+    `https://mern-tavern-of-heroes.onrender.com/api/users/me`,
+    {
+      method: "PATCH",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedUser),
+    },
+  );
 
   if (!res.ok) {
     throw new Response("Failed to update profile", {

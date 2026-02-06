@@ -1,17 +1,6 @@
-import { Navigate, Outlet } from "react-router";
-import { useTavernContext } from "../context/useContext";
+import { Outlet } from "react-router";
 
 const AccountLayout = () => {
-  const { user, isLoading } = useTavernContext();
-
-  if (isLoading) {
-    return null;
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
   return <Outlet />;
 };
 

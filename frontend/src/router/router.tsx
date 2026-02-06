@@ -25,14 +25,21 @@ import { loginUserAction } from "./actions/loginUserAction";
 import { editUserAction } from "./actions/editUserAction";
 import { deleteUserAction } from "./actions/deleteUserAction";
 import AccountLayout from "../layouts/AccountLayout";
+import { authLoader } from "./loaders/authLoader";
+import { editPostLoader } from "./loaders/editPostLoader";
+import RootLayoutError from "../components/Errors/RootLayoutError";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     action: logoutUserAction,
+    errorElement: <RootLayoutError />,
     children: [
-      { index: true, element: <Landing />, loader: guestLoader },
+      {
+        index: true,
+        element: <Landing />,
+      },
       {
         path: "users",
         children: [
@@ -49,8 +56,8 @@ export const router = createBrowserRouter([
       {
         path: "register",
         element: <SignUp />,
-        action: registerUserAction,
         loader: guestLoader,
+        action: registerUserAction,
       },
       {
         path: "posts",
@@ -72,7 +79,7 @@ export const router = createBrowserRouter([
               {
                 path: "edit",
                 element: <EditPost />,
-                loader: singlePostLoader,
+                loader: editPostLoader,
                 action: editPostAction,
               },
             ],
@@ -80,6 +87,7 @@ export const router = createBrowserRouter([
           {
             path: "new",
             element: <NewPost />,
+            loader: authLoader,
             action: newPostAction,
           },
         ],
@@ -87,6 +95,7 @@ export const router = createBrowserRouter([
       {
         path: "account",
         element: <AccountLayout />,
+        loader: authLoader,
         action: deleteUserAction,
         children: [
           { index: true, element: <Account /> },

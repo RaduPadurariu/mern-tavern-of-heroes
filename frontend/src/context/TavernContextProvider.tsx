@@ -1,67 +1,50 @@
 import { useCallback, useEffect, useState } from "react";
 import { TavernContext } from "./TavernContext";
 import type { TavernContextProviderType, UserType } from "../types/types";
+import { API_URL } from "../config/api";
 
 export const TavernContextProvider = ({
   children,
 }: TavernContextProviderType) => {
   const [user, setUser] = useState<UserType | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const refetchUser = useCallback(async () => {
-    // const res = await fetch("http://localhost:3000/api/auth/me",
-    const res = await fetch(
-      "https://mern-tavern-of-heroes.onrender.com/api/auth/me",
-      {
+  const refetchUser = useCallback(async (): Promise<void> => {
+    setIsLoading(true);
+
+    try {
+      const res: Response = await fetch(`${API_URL}/api/auth/me`, {
         credentials: "include",
-      },
-    );
+      });
 
-    if (!res.ok) {
+      if (!res.ok) {
+        setUser(null);
+        return;
+      }
+
+      const data: UserType = await res.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Auth fetch failed:", error);
       setUser(null);
-      return;
+    } finally {
+      setIsLoading(false);
     }
-
-    const data = await res.json();
-    setUser(data);
   }, []);
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        // const res = await fetch("http://localhost:3000/api/auth/me",
-        const res = await fetch(
-          "https://mern-tavern-of-heroes.onrender.com/api/auth/me",
-          {
-            credentials: "include",
-          },
-        );
-
-        if (res.status === 401) {
-          // not logged in → normal case
-          setUser(null);
-          return;
-        }
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch user");
-        }
-
-        const data: UserType = await res.json();
-        setUser(data);
-      } catch (err) {
-        console.error(err);
-        setUser(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getUser();
-  }, []);
+    refetchUser();
+  }, [refetchUser]);
 
   return (
-    <TavernContext.Provider value={{ user, setUser, isLoading, refetchUser }}>
+    <TavernContext.Provider
+      value={{
+        user,
+        setUser,
+        isLoading,
+        refetchUser,
+      }}
+    >
       {children}
     </TavernContext.Provider>
   );

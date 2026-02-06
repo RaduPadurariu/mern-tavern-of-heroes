@@ -8,14 +8,17 @@ const SingleUser = () => {
   return (
     <div className="tavern-container w-[90%] lg:w-900px">
       <div className="flex flex-col justify-center bg-(--primary-color) py-2 px-4 m-1 rounded-[5px] text-(--light-color)">
-        <div className="w-full flex justify-between items-center">
-          <div className="pl-0 md:pl-10">
+        <div className="flex justify-between items-center">
+          <div className="pl-0 md:pl-10 w-full">
             <div className="flex flex-col md:flex-row items-center mt-4">
               <div className="w-full md:w-1/4 mb-4 md:mb-0">
                 <img
                   src={user.avatar}
                   alt="no-avatar"
-                  className="rounded-lg max-w-[330px] w-full"
+                  className="rounded-lg max-w-[330px] w-full h-full"
+                  onError={(e) => {
+                    e.currentTarget.src = "/images/user.png";
+                  }}
                 />
               </div>
               <div className="flex w-full md:w-3/4 ml-0 md:ml-5 gap-4">

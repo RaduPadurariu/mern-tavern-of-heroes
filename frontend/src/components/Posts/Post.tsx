@@ -8,7 +8,6 @@ const Post = ({ post }: { post: PostType }) => {
   const username = isDeletedUser ? "Deleted user" : post.user.username;
 
   const avatar = isDeletedUser ? "/images/deletedUser.png" : post.user.avatar;
-  console.log(avatar);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-GB", {

@@ -70,7 +70,7 @@ const SinglePost = () => {
                 {post.title}
               </h2>
 
-              <div className="w-full py-2 text-sm inputFamily text-(--primary-color) leading-relaxed max-h-24 overflow-hidden">
+              <div className="w-full py-2 text-sm inputFamily text-(--primary-color) leading-relaxed overflow-hidden">
                 {post.content}
               </div>
             </div>

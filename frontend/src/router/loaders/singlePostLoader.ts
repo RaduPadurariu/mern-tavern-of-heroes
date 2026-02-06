@@ -1,15 +1,13 @@
-import type { LoaderFunctionArgs } from "react-router";
+import { type LoaderFunctionArgs } from "react-router";
+import { API_URL } from "../../config/api";
 
 export async function singlePostLoader({ params }: LoaderFunctionArgs) {
-  // const res = await fetch(`http://localhost:3000/api/posts/${params.id}`);
-  const res = await fetch(
-    `https://mern-tavern-of-heroes.onrender.com/api/posts/${params.id}`,
-  );
+  const postRes = await fetch(`${API_URL}/api/posts/${params.id}`);
 
-  if (!res.ok) {
+  if (!postRes.ok) {
     throw new Response("Failed to fetch single post", {
-      status: res.status,
+      status: postRes.status,
     });
   }
-  return res.json();
+  return postRes.json();
 }

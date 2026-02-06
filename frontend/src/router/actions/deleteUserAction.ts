@@ -1,14 +1,11 @@
 import { redirect } from "react-router";
+import { API_URL } from "../../config/api";
 
 export async function deleteUserAction() {
-  // const res = await fetch("http://localhost:3000/api/users/me",
-  const res = await fetch(
-    "https://mern-tavern-of-heroes.onrender.com/api/users/me",
-    {
-      method: "DELETE",
-      credentials: "include",
-    },
-  );
+  const res = await fetch(`${API_URL}/api/users/me`, {
+    method: "DELETE",
+    credentials: "include",
+  });
 
   if (!res.ok) {
     throw new Response("Failed to delete account", { status: res.status });

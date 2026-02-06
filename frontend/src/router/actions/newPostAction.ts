@@ -1,4 +1,5 @@
 import { redirect, type ActionFunctionArgs } from "react-router";
+import { API_URL } from "../../config/api";
 
 export async function newPostAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -11,16 +12,12 @@ export async function newPostAction({ request }: ActionFunctionArgs) {
     content,
   };
 
-  // const res = await fetch("http://localhost:3000/api/posts",
-  const res = await fetch(
-    "https://mern-tavern-of-heroes.onrender.com/api/posts",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newPost),
-      credentials: "include",
-    },
-  );
+  const res = await fetch(`${API_URL}/api/posts`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newPost),
+    credentials: "include",
+  });
 
   if (res.status === 401) {
     throw new Response("Not authenticated", { status: 401 });

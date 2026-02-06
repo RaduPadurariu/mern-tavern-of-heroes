@@ -1,4 +1,5 @@
 import { redirect, type ActionFunctionArgs } from "react-router";
+import { API_URL } from "../../config/api";
 
 export async function loginUserAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -6,18 +7,14 @@ export async function loginUserAction({ request }: ActionFunctionArgs) {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
 
-  // const res = await fetch("http://localhost:3000/api/auth/login",
-  const res = await fetch(
-    "https://mern-tavern-of-heroes.onrender.com/api/auth/login",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ email, password }),
+  const res = await fetch(`${API_URL}/api/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    credentials: "include",
+    body: JSON.stringify({ email, password }),
+  });
 
   if (!res.ok) {
     const errorData = await res.json();
@@ -29,5 +26,5 @@ export async function loginUserAction({ request }: ActionFunctionArgs) {
     };
   }
 
-  return redirect("/posts");
+  return redirect("/");
 }

@@ -8,7 +8,6 @@ const Post = ({ post }: { post: PostType }) => {
   const username = isDeletedUser ? "Deleted user" : post.user.username;
 
   const avatar = isDeletedUser ? "/images/deletedUser.png" : post.user.avatar;
-  console.log(avatar);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-GB", {
@@ -21,7 +20,7 @@ const Post = ({ post }: { post: PostType }) => {
   };
 
   return (
-    <Form className="flex flex-col  bg-(--light-color) items-start border border-(--primary-color) rounded-[5px] m-0.5 p-3 w-full">
+    <Form className="flex flex-col  bg-(--light-color) items-start border border-(--primary-color) rounded-[5px] m-0.5 mb-4 p-3 w-full">
       <input type="hidden" />
       {/* Avatar + Username */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center w-full">
@@ -55,11 +54,14 @@ const Post = ({ post }: { post: PostType }) => {
       {/* Content */}
       <div className="flex-1 w-full">
         <div className="md:ml-22">
-          <h2 className="my-1 text-(--primary-color) text-xl font-semibold inputFamily mb-2 mt-6 md:mt-0">
+          <Link
+            to={`/posts/${post._id}`}
+            className="block text-(--primary-color) text-[20px] font-semibold inputFamily py-4 md:mb-5 md:py-2"
+          >
             {post.title}
-          </h2>
+          </Link>
 
-          <div className="w-full py-2 text-sm inputFamily text-(--primary-color) leading-relaxed max-h-24 overflow-hidden">
+          <div className="w-full pb-2 text-sm inputFamily text-(--primary-color) leading-relaxed max-h-24 overflow-hidden">
             {post.content}
           </div>
         </div>

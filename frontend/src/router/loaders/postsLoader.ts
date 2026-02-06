@@ -1,8 +1,7 @@
+import { API_URL } from "../../config/api";
+
 export async function postsLoader() {
-  // const res = await fetch("http://localhost:3000/api/posts");
-  const res = await fetch(
-    "https://mern-tavern-of-heroes.onrender.com/api/posts",
-  );
+  const res = await fetch(`${API_URL}/api/posts`);
 
   if (!res.ok) {
     throw new Response("Failed to fetch posts", {

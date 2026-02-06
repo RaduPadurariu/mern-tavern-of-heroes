@@ -4,8 +4,8 @@ import type { UserType } from "../../types/types";
 
 const User = ({ user }: { user: UserType }) => {
   return (
-    <div className="flex flex-col md:flex-row items-center md:items-start m-5 bg-(--light-color) text-(--primary-color)">
-      <div className="mt-4">
+    <div className="flex flex-col md:flex-row m-5 bg-(--light-color) text-(--primary-color) mb-8">
+      <div className="mb-4">
         <img
           src={user.avatar}
           alt="no-avatar-img"
@@ -16,11 +16,11 @@ const User = ({ user }: { user: UserType }) => {
         />
       </div>
 
-      <div className="flex flex-col justify-between my-4 mx-10">
-        <div className="flex mb-3">
+      <div className="flex flex-col justify-between md:mx-10">
+        <div className="flex">
           <Link
             to={`/users/${user._id}`}
-            className="text-3xl font-semibold mb-2 cursor-pointer"
+            className="text-3xl font-semibold cursor-pointer"
           >
             {user.username}
           </Link>
@@ -39,12 +39,16 @@ const User = ({ user }: { user: UserType }) => {
           </span>
         </div>
 
-        <div className="text-xl mb-2 ">
-          <div className="">nickname: {user.nickname}</div>
-        </div>
-        <div className="text-xl mb-2 ">
-          <div className="">class: {user.heroClass}</div>{" "}
-        </div>
+        {user.nickname && (
+          <div className="text-xl my-2 ">
+            <div className="">nickname: {user.nickname}</div>
+          </div>
+        )}
+        {user.heroClass && (
+          <div className="text-xl mb-2 ">
+            <div className="">class: {user.heroClass}</div>
+          </div>
+        )}
         <p></p>
       </div>
     </div>

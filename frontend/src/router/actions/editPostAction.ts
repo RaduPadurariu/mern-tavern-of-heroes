@@ -1,5 +1,6 @@
 import { redirect } from "react-router";
 import type { ActionFunctionArgs } from "react-router";
+import { API_URL } from "../../config/api";
 
 export async function editPostAction({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -17,16 +18,12 @@ export async function editPostAction({ request, params }: ActionFunctionArgs) {
     content,
   };
 
-  // const res = await fetch(`http://localhost:3000/posts/${postId}`,
-  const res = await fetch(
-    `https://mern-tavern-of-heroes.onrender.com/posts/${postId}`,
-    {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedPost),
-      credentials: "include",
-    },
-  );
+  const res = await fetch(`${API_URL}/api/posts/${postId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedPost),
+    credentials: "include",
+  });
 
   if (!res.ok) {
     throw new Response("Failed to update post", { status: 500 });

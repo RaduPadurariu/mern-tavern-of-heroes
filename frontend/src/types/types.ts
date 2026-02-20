@@ -7,6 +7,7 @@ export type PostType = {
     username: string;
     avatar: string;
   };
+  likedBy: string[];
   createdAt: string;
 };
 

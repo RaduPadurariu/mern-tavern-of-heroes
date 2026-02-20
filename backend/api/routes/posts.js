@@ -3,21 +3,36 @@ import Post from "../../models/Post.js";
 import { authMiddleware } from "../../middleware/auth.middleware.js";
 const router = Router();
 
-// Get posts
+// Reactions
 
-router.get("/", async (req, res) => {
+router.post("/:id/reaction", authMiddleware, async (req, res) => {
   try {
-    const filter = {};
-    if (req.query.user) {
-      filter.user = req.query.user;
-    }
-    const posts = await Post.find(filter)
-      .sort({ createdAt: -1 })
-      .populate("user", "username avatar");
+    const { id } = req.params;
+    const userId = req.user._id;
 
-    res.json(posts);
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const alreadyLiked = post.likedBy.some(
+      (likedUserId) => likedUserId.toString() === userId.toString(),
+    );
+
+    const update = alreadyLiked
+      ? { $pull: { likedBy: userId } }
+      : { $addToSet: { likedBy: userId } };
+
+    const updatedPost = await Post.findByIdAndUpdate(id, update, { new: true });
+
+    return res.json({
+      success: true,
+      likedBy: updatedPost.likedBy,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -37,21 +52,6 @@ router.get("/:id", async (req, res) => {
     res.json(post);
   } catch (err) {
     return res.status(400).json({ message: "Invalid post ID" });
-  }
-});
-
-// Post a post
-
-router.post("/", authMiddleware, async (req, res) => {
-  try {
-    const post = await Post.create({
-      title: req.body.title,
-      content: req.body.content,
-      user: req.user._id,
-    });
-    res.status(201).json(post);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
   }
 });
 
@@ -99,6 +99,39 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     res.status(204).send();
   } catch (err) {
     res.status(400).json({ message: "Invalid post ID" });
+  }
+});
+
+// Get posts
+
+router.get("/", async (req, res) => {
+  try {
+    const filter = {};
+    if (req.query.user) {
+      filter.user = req.query.user;
+    }
+    const posts = await Post.find(filter)
+      .sort({ createdAt: -1 })
+      .populate("user", "username avatar");
+
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Post a post
+
+router.post("/", authMiddleware, async (req, res) => {
+  try {
+    const post = await Post.create({
+      title: req.body.title,
+      content: req.body.content,
+      user: req.user._id,
+    });
+    res.status(201).json(post);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 });
 

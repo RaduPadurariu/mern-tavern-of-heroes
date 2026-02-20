@@ -35,6 +35,7 @@ const Pagination = <T,>({
         pageCount={pageCount}
         previousLabel="< previous"
         renderOnZeroPageCount={null}
+        forcePage={pageFromQuery - 1}
         containerClassName="flex items-center justify-center gap-2 my-6"
         pageClassName="px-3 py-1 rounded cursor-pointer hover:opacity-80"
         activeClassName="bg-(--light-color) text-(--primary-color)"

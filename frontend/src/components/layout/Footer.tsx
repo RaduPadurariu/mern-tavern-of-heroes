@@ -8,7 +8,7 @@ const Footer = () => {
         className="text-(--light-color) font-bold text-lg"
         rel="noopener noreferrer"
       >
-        @ 2025 Radu Padurariu. &nbsp;All rights reserved.
+        @ {new Date().getFullYear()} Radu Padurariu. &nbsp;All rights reserved.
       </a>
     </footer>
   );

@@ -4,7 +4,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { MdOutlineAccountBox } from "react-icons/md";
 import { Form, Link } from "react-router";
-import { useTavernContext } from "../context/useContext";
+import { useTavernContext } from "../../context/useContext";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -29,6 +29,7 @@ const Navbar = () => {
       }`}
     >
       <div className="flex items-center">
+        {/* Logo */}
         <div className="relative self-start mx-auto ml-[10vw] mr-[30px]">
           <div className="flex flex-col items-center justify-center absolute top-[-30px] pl-6">
             <div className="w-[11px] h-[15px] rounded-full border-[3px] border-(--light-color) animate-[banner2_1.2s_ease_forwards]"></div>
@@ -44,6 +45,8 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Navbar */}
       <ul className="flex items-center justify-center text-center">
         <li>
           <Link

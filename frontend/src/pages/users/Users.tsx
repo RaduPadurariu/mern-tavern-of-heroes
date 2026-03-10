@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router";
-import HeadTitle from "../../components/HeadTitle";
+import HeadTitle from "../../components/layout/HeadTitle";
 import Pagination from "../../components/Pagination/Pagination";
 import type { UserType } from "../../types/types";
 import User from "../../components/Users/User";

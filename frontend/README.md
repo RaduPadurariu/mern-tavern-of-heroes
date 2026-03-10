@@ -7,6 +7,6 @@ The project includes full authentication with protected routes, user profiles, a
 Through this project, I strengthened my understanding of full-stack architecture, API communication, and real-world authentication flows.
 
 Technologies used:
-React Router 7, Express, MongoDB, Node.js, Tailwind CSS, TypeScript, Zod, JWT, Bcrypt, Jest, Vercel.
+React Router 7, Express, MongoDB, Node.js, Tailwind CSS, TypeScript, Zod, JWT, Bcrypt, Vitest, Vercel.
 
 All rights reserved – Radu Padurariu – 2025–2026

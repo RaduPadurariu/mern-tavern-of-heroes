@@ -24,7 +24,7 @@ const Account = () => {
               <FiEdit /> <span className="ml-2">Edit Profile</span>
             </div>
           </Link>
-          <Form method="delete" action="/account">
+          <Form method="delete">
             <button
               type="submit"
               className="text-white inline-block bg-(--danger-color) px-[1.3rem] py-[0.4rem] text-base font-bold border-2 border-(--light-color) rounded-[5px] cursor-pointer mr-2 transition-opacity duration-300 ease-in outline-none hover:opacity-75"

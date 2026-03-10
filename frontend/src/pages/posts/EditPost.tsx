@@ -48,29 +48,40 @@ const EditPost = () => {
               className="my-1 flex flex-col"
               onSubmit={(e) => submitHandler(e)}
             >
-              <input
-                type="text"
-                className="my-1 text-(--primary-color) bg-[#F7F3F3] w-full p-1.5 text-lg border border-(--primary-color) rounded-[3px] focus:outline-(--primary-color) placeholder:text-[#777] inputFamily"
-                style={{ borderStyle: "none" }}
-                placeholder="Rumor title"
-                name="title"
-                value={state.title}
-                onChange={(e) =>
-                  dispatch({ type: "SET_TITLE", payload: e.target.value })
-                }
-                required
-              />
-              <textarea
-                className="my-1 text-(--primary-color) h-[150px] bg-[#F7F3F3] w-full p-1.5 text-lg border border-(--primary-color) rounded-[3px] placeholder:text-[#777] resize-none inputFamily focus:outline-none"
-                style={{ borderStyle: "none" }}
-                name="content"
-                value={state.content}
-                placeholder="Rumor content"
-                onChange={(e) =>
-                  dispatch({ type: "SET_CONTENT", payload: e.target.value })
-                }
-                required
-              ></textarea>
+              <div>
+                <label htmlFor="tavernEditPostTitle" className="sr-only">
+                  Title
+                </label>
+                <input
+                  id="tavernEditPostTitle"
+                  type="text"
+                  className="my-1 text-(--primary-color) bg-[#F7F3F3] w-full p-1.5 text-lg border border-(--primary-color) rounded-[3px] focus:outline-(--primary-color) placeholder:text-[#777] inputFamily"
+                  style={{ borderStyle: "none" }}
+                  placeholder="Rumor title"
+                  name="title"
+                  value={state.title}
+                  onChange={(e) =>
+                    dispatch({ type: "SET_TITLE", payload: e.target.value })
+                  }
+                />
+              </div>
+              <div>
+                <label htmlFor="tavernEditPostContent" className="sr-only">
+                  Content
+                </label>
+                <textarea
+                  id="tavernEditPostContent"
+                  className="my-1 text-(--primary-color) h-[150px] bg-[#F7F3F3] w-full p-1.5 text-lg border border-(--primary-color) rounded-[3px] placeholder:text-[#777] resize-none inputFamily focus:outline-none"
+                  style={{ borderStyle: "none" }}
+                  name="content"
+                  value={state.content}
+                  placeholder="Rumor content"
+                  onChange={(e) =>
+                    dispatch({ type: "SET_CONTENT", payload: e.target.value })
+                  }
+                ></textarea>
+              </div>
+
               <div className="flex">
                 <button
                   type="submit"

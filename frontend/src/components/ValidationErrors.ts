@@ -41,7 +41,7 @@ export function checkEmailSignUp(email: string) {
   const errors: string[] = [];
 
   if (email.trim().length === 0) {
-    errors.push("Email is required");
+    errors.push("Email is required.");
   } else {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {

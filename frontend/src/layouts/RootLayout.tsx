@@ -1,6 +1,6 @@
 import { Outlet, ScrollRestoration, useNavigation } from "react-router";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
 import { useTavernContext } from "../context/useContext";
 import { useEffect } from "react";
 import GearLoader from "../components/Loaders/GearLoader";

@@ -74,6 +74,7 @@ router.delete("/me", authMiddleware, async (req, res) => {
       httpOnly: true,
       sameSite: isProd ? "none" : "lax",
       secure: isProd,
+      path: "/",
     });
 
     return res.status(204).send();

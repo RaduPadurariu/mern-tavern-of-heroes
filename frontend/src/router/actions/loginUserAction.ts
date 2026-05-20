@@ -1,4 +1,4 @@
-import { redirect, type ActionFunctionArgs } from "react-router";
+import { type ActionFunctionArgs } from "react-router";
 import { API_URL } from "../../config/api";
 
 export async function loginUserAction({ request }: ActionFunctionArgs) {
@@ -26,5 +26,5 @@ export async function loginUserAction({ request }: ActionFunctionArgs) {
     };
   }
 
-  return redirect("/");
+  return { ok: true };
 }

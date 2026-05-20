@@ -3,9 +3,9 @@ import {
   RouterProvider,
   type ActionFunction,
 } from "react-router";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import EditProfileForm from "./EditProfileForm";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const mockUseTavernContext = vi.fn();
@@ -14,104 +14,86 @@ vi.mock("../../context/useContext", () => ({
   useTavernContext: () => mockUseTavernContext(),
 }));
 
+const mockUser = {
+  _id: "123",
+  username: "Radu",
+  email: "radu@test.com",
+  nickname: "Padu",
+  gender: "Male",
+  heroClass: "Warrior",
+  avatar: "",
+};
+
 function renderEditProfile(action?: ActionFunction) {
   const router = createMemoryRouter(
     [
       {
-        path: "/",
-        element: <EditProfileForm />,
-        action,
+        id: "account",
+        path: "/account",
+        loader: async () => mockUser,
+        children: [
+          {
+            index: true,
+            element: <div>User Page</div>,
+          },
+          {
+            path: "edit-profile",
+            element: <EditProfileForm />,
+            action,
+          },
+        ],
       },
       {
-        path: "/account",
-        element: <div>User Page</div>,
+        path: "/login",
+        element: <div>Login Page</div>,
       },
     ],
-    { initialEntries: ["/"] },
+    { initialEntries: ["/account/edit-profile"] },
   );
 
   return render(<RouterProvider router={router} />);
 }
 
 describe("Edit Profile", () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-  it("render all form components", () => {
+  beforeEach(() => {
     mockUseTavernContext.mockReturnValue({
-      user: {
-        _id: 123,
-        username: "Radu",
-        email: "radu@test.com",
-        nickname: "",
-        gender: "",
-        heroClass: "",
-      },
       isLoading: false,
     });
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("render all form components", async () => {
     renderEditProfile();
-    expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
+    expect(await screen.findByLabelText(/Username/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Nickname/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Gender/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Hero Class/i)).toBeInTheDocument();
   });
 
-  it("test if email and username inputs are disabled", () => {
-    mockUseTavernContext.mockReturnValue({
-      user: {
-        _id: 123,
-        username: "Radu",
-        email: "radu@test.com",
-        nickname: "",
-        gender: "",
-        heroClass: "",
-      },
-      isLoading: false,
-    });
+  it("test if email and username inputs are disabled", async () => {
     renderEditProfile();
 
-    expect(screen.getByLabelText(/Username/i)).toBeDisabled();
+    expect(await screen.findByLabelText(/Username/i)).toBeDisabled();
     expect(screen.getByLabelText(/Email/i)).toBeDisabled();
   });
 
   it("render form pre-filled with data from loader", async () => {
-    mockUseTavernContext.mockReturnValue({
-      user: {
-        _id: 123,
-        username: "Radu",
-        email: "radu@test.com",
-        nickname: "Padu",
-        gender: "Male",
-        heroClass: "Warrior",
-      },
-      isLoading: false,
-    });
-
     renderEditProfile();
 
     const nicknameInput = await screen.findByLabelText(/Nickname/i);
     const genderInput = screen.getByLabelText(/Gender/i);
     const heroClassInput = screen.getByLabelText(/Hero Class/i);
 
-    expect(nicknameInput).toHaveValue("Padu");
+    await waitFor(() => expect(nicknameInput).toHaveValue("Padu"));
     expect(genderInput).toHaveValue("Male");
     expect(heroClassInput).toHaveValue("Warrior");
   });
 
   it("submit form when fields are valid", async () => {
-    mockUseTavernContext.mockReturnValue({
-      user: {
-        _id: 123,
-        username: "Radu",
-        email: "radu@test.com",
-        nickname: "Padu",
-        gender: "Male",
-        heroClass: "Warrior",
-      },
-      isLoading: false,
-    });
-
     const actionMock = vi.fn(async () => null);
 
     renderEditProfile(actionMock);
@@ -172,6 +154,7 @@ describe("Edit Profile", () => {
 
     renderEditProfile();
 
+    await screen.findByLabelText(/Nickname/i);
     await user.click(screen.getByRole("link", { name: /Go Back/i }));
 
     expect(confirmSpy).not.toHaveBeenCalled();

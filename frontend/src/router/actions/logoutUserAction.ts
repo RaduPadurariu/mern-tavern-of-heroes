@@ -1,4 +1,3 @@
-import { redirect } from "react-router";
 import { API_URL } from "../../config/api";
 
 export async function logoutUserAction() {
@@ -11,5 +10,5 @@ export async function logoutUserAction() {
     throw new Response("Failed logout", { status: 500 });
   }
 
-  return redirect("/");
+  return { ok: true };
 }

@@ -1,14 +1,8 @@
 import { redirect } from "react-router";
-import { API_URL } from "../../config/api";
+import { fetchMe } from "../../api/fetchMe";
 
 export async function guestLoader() {
-  const res = await fetch(`${API_URL}/api/auth/me`, {
-    credentials: "include",
-  });
-
-  if (res.ok) {
-    return redirect("/posts");
-  }
-
+  const user = await fetchMe();
+  if (user) throw redirect("/posts");
   return null;
 }

@@ -3,12 +3,24 @@ import { AiOutlineLogin, AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { MdOutlineAccountBox } from "react-icons/md";
-import { Form, Link } from "react-router";
+import { Link, useFetcher, useNavigate } from "react-router";
 import { useTavernContext } from "../../context/useContext";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
-  const { user } = useTavernContext();
+  const { user, setUser, isLoading } = useTavernContext();
+  const fetcher = useFetcher();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (fetcher.state !== "idle") return;
+
+    const logoutData = fetcher.data as { ok?: boolean } | undefined;
+    if (!logoutData?.ok) return;
+
+    setUser(null);
+    navigate("/");
+  }, [fetcher.state, fetcher.data, navigate, setUser]);
 
   useEffect(() => {
     const changeNav = () => {
@@ -66,7 +78,20 @@ const Navbar = () => {
             <span className="text-sm sm:text-xl md:text-2xl">Rumors</span>
           </Link>
         </li>
-        {!user && (
+        {isLoading && (
+          <>
+            <li aria-hidden="true">
+              <div className="mx-0.5 my-2.5 h-5 w-11 md:h-6 md:w-14 rounded-[5px] bg-(--primary-color) animate-pulse" />
+            </li>
+            <li role="status" aria-label="Loading authentication">
+              <div
+                className="mx-0.5 my-2.5 h-5 w-9 md:h-6 md:w-11 rounded-[5px] bg-(--primary-color) animate-pulse"
+                aria-hidden="true"
+              />
+            </li>
+          </>
+        )}
+        {!user && !isLoading && (
           <>
             <li>
               <Link
@@ -92,7 +117,7 @@ const Navbar = () => {
             </li>
           </>
         )}
-        {user && (
+        {user && !isLoading && (
           <>
             <li>
               <Link
@@ -106,7 +131,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Form method="post">
+              <fetcher.Form method="post" action="/">
                 <button
                   type="submit"
                   className="text-(--light-color) px-0.5 md:px-2 py-2 my-0 mx-0.5 flex items-center hover:bg-gray-500/20 rounded-[5px] duration-300 transition-all ease-in-out cursor-pointer"
@@ -116,7 +141,7 @@ const Navbar = () => {
                     Log out
                   </span>
                 </button>
-              </Form>
+              </fetcher.Form>
             </li>
           </>
         )}

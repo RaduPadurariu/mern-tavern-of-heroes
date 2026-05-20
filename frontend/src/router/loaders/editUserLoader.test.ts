@@ -1,31 +1,31 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { authLoader } from "./authLoader";
+import { editUserLoader } from "./editUserLoader";
 import { redirect } from "react-router";
 
 const mockUser = {
   _id: "1",
   username: "radutest",
   email: "radu@example.com",
-  nickname: "",
-  gender: "",
-  heroClass: "",
+  nickname: "Padu",
+  gender: "Male",
+  heroClass: "Warrior",
   avatar: "",
 };
 
-describe("authLoader", () => {
+describe("editUserLoader", () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
-  it("allows access when user is authenticated", async () => {
+  it("returns user when authenticated", async () => {
     globalThis.fetch = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => mockUser,
     } as Response);
 
-    const result = await authLoader();
+    const result = await editUserLoader();
 
-    expect(result).toBeNull();
+    expect(result).toEqual(mockUser);
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 
@@ -34,6 +34,6 @@ describe("authLoader", () => {
       ok: false,
     } as Response);
 
-    await expect(authLoader()).rejects.toEqual(redirect("/login"));
+    await expect(editUserLoader()).rejects.toEqual(redirect("/login"));
   });
 });

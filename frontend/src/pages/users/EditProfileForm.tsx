@@ -1,11 +1,13 @@
-import { Form, Link, Navigate } from "react-router";
+import { Form, Link, Navigate, useRouteLoaderData } from "react-router";
 import { useProfileReducer } from "../../hooks/useProfileReducer";
 import { useTavernContext } from "../../context/useContext";
 import { useEffect } from "react";
+import type { UserType } from "../../types/types";
 
 const EditProfileForm = () => {
   const { state, dispatch } = useProfileReducer();
-  const { user, isLoading } = useTavernContext();
+  const { isLoading } = useTavernContext();
+  const user = useRouteLoaderData("account") as UserType | undefined;
 
   useEffect(() => {
     if (!user) return;

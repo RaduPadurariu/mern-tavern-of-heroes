@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 
 import {
   createMemoryRouter,
@@ -10,22 +10,25 @@ import EditPost from "./EditPost";
 import userEvent from "@testing-library/user-event";
 
 function renderEditPost(action?: ActionFunction) {
-  const router = createMemoryRouter([
-    {
-      path: "/",
-      element: <EditPost />,
-      loader: () => ({
-        _id: 1,
-        title: "Existing title",
-        content: "Existing content",
-      }),
-      action,
-    },
-    {
-      path: "/posts/1",
-      element: <div>Post Page</div>,
-    },
-  ]);
+  const router = createMemoryRouter(
+    [
+      {
+        path: "/posts/1/edit",
+        element: <EditPost />,
+        loader: () => ({
+          _id: 1,
+          title: "Existing title",
+          content: "Existing content",
+        }),
+        action,
+      },
+      {
+        path: "/posts/1",
+        element: <div>Post Page</div>,
+      },
+    ],
+    { initialEntries: ["/posts/1/edit"] },
+  );
 
   return render(<RouterProvider router={router} />);
 }
@@ -49,7 +52,7 @@ describe("EditPost", () => {
     const titleInput = await screen.findByLabelText(/Title/i);
     const contentInput = screen.getByLabelText(/Content/i);
 
-    expect(titleInput).toHaveValue("Existing title");
+    await waitFor(() => expect(titleInput).toHaveValue("Existing title"));
     expect(contentInput).toHaveValue("Existing content");
   });
 
@@ -59,6 +62,7 @@ describe("EditPost", () => {
     const titleInput = await screen.findByLabelText(/Title/i);
     const contentInput = screen.getByLabelText(/Content/i);
 
+    await waitFor(() => expect(titleInput).toHaveValue("Existing title"));
     await userEvent.clear(titleInput);
     await userEvent.clear(contentInput);
 
@@ -75,6 +79,7 @@ describe("EditPost", () => {
     const titleInput = await screen.findByLabelText(/Title/i);
     const contentInput = screen.getByLabelText(/Content/i);
 
+    await waitFor(() => expect(titleInput).toHaveValue("Existing title"));
     await userEvent.clear(titleInput);
     await userEvent.clear(contentInput);
 

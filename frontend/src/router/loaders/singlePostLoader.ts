@@ -1,13 +1,11 @@
 import { type LoaderFunctionArgs } from "react-router";
-import { API_URL } from "../../config/api";
+import { fetchPostById } from "../../api/fetchPostById";
 
 export async function singlePostLoader({ params }: LoaderFunctionArgs) {
-  const postRes = await fetch(`${API_URL}/api/posts/${params.id}`);
-
-  if (!postRes.ok) {
-    throw new Response("Failed to fetch single post", {
-      status: postRes.status,
-    });
+  const postId = params.id;
+  if (!postId) {
+    throw new Response("Post ID missing", { status: 400 });
   }
-  return postRes.json();
+
+  return fetchPostById(postId);
 }

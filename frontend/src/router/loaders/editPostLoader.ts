@@ -1,23 +1,14 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { redirect } from "react-router";
-import { API_URL } from "../../config/api";
+import { requireAuth } from "../../api/requireAuth";
+import { fetchPostById } from "../../api/fetchPostById";
 
 export async function editPostLoader({ params }: LoaderFunctionArgs) {
-  const authRes = await fetch(`${API_URL}/api/auth/me`, {
-    credentials: "include",
-  });
+  await requireAuth();
 
-  if (!authRes.ok) {
-    throw redirect("/login");
+  const postId = params.id;
+  if (!postId) {
+    throw new Response("Post ID missing", { status: 400 });
   }
 
-  const postRes = await fetch(`${API_URL}/api/posts/${params.id}`);
-
-  if (!postRes.ok) {
-    throw new Response("Failed to fetch post", {
-      status: postRes.status,
-    });
-  }
-
-  return postRes.json();
+  return fetchPostById(postId);
 }

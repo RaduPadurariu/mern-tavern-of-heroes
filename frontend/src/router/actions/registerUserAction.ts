@@ -1,4 +1,4 @@
-import { redirect, type ActionFunctionArgs } from "react-router";
+import { type ActionFunctionArgs } from "react-router";
 import { API_URL } from "../../config/api";
 
 export async function registerUserAction({ request }: ActionFunctionArgs) {
@@ -30,5 +30,5 @@ export async function registerUserAction({ request }: ActionFunctionArgs) {
       message: errorData.message, // 👈 pentru auth / server
     };
   }
-  return redirect("/");
+  return { ok: true };
 }

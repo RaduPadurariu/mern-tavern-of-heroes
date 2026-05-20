@@ -1,37 +1,57 @@
 import {
   createMemoryRouter,
-  redirect,
   RouterProvider,
   type ActionFunction,
 } from "react-router";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import LogInForm from "./LogInForm";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+const mockRefetchUser = vi.fn();
+const mockUseTavernContext = vi.fn();
+
+vi.mock("../../context/useContext", () => ({
+  useTavernContext: () => mockUseTavernContext(),
+}));
 
 function renderLogIn(action?: ActionFunction) {
   const router = createMemoryRouter(
     [
       {
         path: "/",
+        element: <div>Home Page</div>,
+      },
+      {
+        path: "/posts",
+        element: <div>Posts Page</div>,
+      },
+      {
+        path: "/login",
         element: <LogInForm />,
         action,
       },
-      {
-        path: "/dashboard",
-        element: <div>Dashboard Page</div>,
-      },
     ],
-
     {
-      initialEntries: ["/"],
+      initialEntries: ["/login"],
     },
   );
 
   return render(<RouterProvider router={router} />);
 }
 
-describe("LogIn", () => {
+describe("LogIn Form", () => {
+  beforeEach(() => {
+    mockRefetchUser.mockResolvedValue(null);
+    mockUseTavernContext.mockReturnValue({
+      refetchUser: mockRefetchUser,
+    });
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("render all form components", () => {
     renderLogIn();
 
@@ -76,18 +96,28 @@ describe("LogIn", () => {
     expect(
       await screen.findByText(/Invalid email or password/i),
     ).toBeInTheDocument();
+    expect(mockRefetchUser).not.toHaveBeenCalled();
   });
 
-  it("submits successfully and redirects to dashboard", async () => {
-    const actionMock: ActionFunction = async () => {
-      return redirect("/dashboard");
-    };
+  it("submits successfully, refetches user and navigates home", async () => {
+    const actionMock: ActionFunction = async () => ({ ok: true });
+    mockRefetchUser.mockResolvedValue({
+      _id: "1",
+      username: "radutest",
+      email: "radu@example.com",
+      nickname: "",
+      gender: "",
+      heroClass: "",
+      avatar: "",
+    });
+
     renderLogIn(actionMock);
 
     await userEvent.type(screen.getByLabelText(/Email/i), "radu@example.com");
     await userEvent.type(screen.getByLabelText(/^Password$/i), "Password1");
-
     await userEvent.click(screen.getByRole("button", { name: /Sign In/i }));
-    expect(await screen.findByText(/Dashboard Page/i)).toBeInTheDocument();
+
+    await waitFor(() => expect(mockRefetchUser).toHaveBeenCalledTimes(1));
+    expect(await screen.findByText(/Posts Page/i)).toBeInTheDocument();
   });
 });

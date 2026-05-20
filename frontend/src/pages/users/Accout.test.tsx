@@ -3,11 +3,12 @@ import {
   RouterProvider,
   type ActionFunction,
 } from "react-router";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Account from "./Account";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+const mockSetUser = vi.fn();
 const mockUseTavernContext = vi.fn();
 
 vi.mock("../../context/useContext", () => ({
@@ -18,7 +19,7 @@ function renderAccount(action?: ActionFunction) {
   const router = createMemoryRouter(
     [
       {
-        path: "/",
+        path: "/account",
         element: <Account />,
         action,
       },
@@ -26,19 +27,30 @@ function renderAccount(action?: ActionFunction) {
         path: "/account/edit-profile",
         element: <div>Edit Page</div>,
       },
+      {
+        path: "/login",
+        element: <div>Login Page</div>,
+      },
     ],
-    { initialEntries: ["/"] },
+    { initialEntries: ["/account"] },
   );
 
   return render(<RouterProvider router={router} />);
 }
 
 describe("delete account", () => {
-  it("renders delete account button", () => {
+  beforeEach(() => {
     mockUseTavernContext.mockReturnValue({
       user: { username: "Radu" },
+      setUser: mockSetUser,
     });
+  });
 
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("renders delete account button", () => {
     renderAccount();
 
     expect(
@@ -47,31 +59,31 @@ describe("delete account", () => {
   });
 
   it("submits delete account form", async () => {
-    const user = userEvent.setup();
-
-    mockUseTavernContext.mockReturnValue({
-      user: { username: "Radu" },
-    });
-
     const actionMock = vi.fn(async () => null);
 
     renderAccount(actionMock);
 
-    await user.click(screen.getByRole("button", { name: /Delete Account/i }));
+    await userEvent.click(screen.getByRole("button", { name: /Delete Account/i }));
 
     expect(actionMock).toHaveBeenCalledTimes(1);
+    expect(mockSetUser).not.toHaveBeenCalled();
+  });
+
+  it("clears user and navigates to login after successful delete", async () => {
+    const actionMock: ActionFunction = async () => ({ ok: true });
+
+    renderAccount(actionMock);
+
+    await userEvent.click(screen.getByRole("button", { name: /Delete Account/i }));
+
+    await waitFor(() => expect(mockSetUser).toHaveBeenCalledWith(null));
+    expect(await screen.findByText(/Login Page/i)).toBeInTheDocument();
   });
 
   it("navigates to edit profile page", async () => {
-    const user = userEvent.setup();
-
-    mockUseTavernContext.mockReturnValue({
-      user: { username: "Radu" },
-    });
-
     renderAccount();
 
-    await user.click(screen.getByRole("link", { name: /Edit Profile/i }));
+    await userEvent.click(screen.getByRole("link", { name: /Edit Profile/i }));
 
     expect(await screen.findByText("Edit Page")).toBeInTheDocument();
   });

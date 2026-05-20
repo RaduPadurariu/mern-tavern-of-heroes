@@ -1,12 +1,6 @@
-import { redirect } from "react-router";
-import { API_URL } from "../../config/api";
+import { requireAuth } from "../../api/requireAuth";
 
 export async function authLoader() {
-  const res = await fetch(`${API_URL}/api/auth/me`, {
-    credentials: "include",
-  });
-
-  if (!res.ok) throw redirect("/login");
-
+  await requireAuth();
   return null;
 }

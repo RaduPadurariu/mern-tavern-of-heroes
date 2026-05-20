@@ -32,7 +32,7 @@ export type UserPageType = {
   posts: PostType[];
 };
 
-export type UpdateUserPayload = {
+export type UpdateUserPayloadType = {
   nickname?: string | null;
   gender?: string | null;
   heroClass?: string | null;
@@ -44,9 +44,31 @@ export type TavernContextType = {
   user: UserType | null;
   setUser: (value: UserType | null) => void;
   isLoading: boolean;
-  refetchUser: () => Promise<void>;
+  refetchUser: () => Promise<UserType | null>;
 };
 
 export type TavernContextProviderType = {
   children: React.ReactNode;
+};
+
+// Action Response Types
+export type AuthActionResponseType = {
+  ok?: boolean;
+  message?: string;
+  status?: number;
+};
+// specific login
+export type LoginActionResponseType = AuthActionResponseType & {
+  fieldErrors?: {
+    email?: string[];
+    password?: string[];
+  };
+};
+// specific signup
+export type SignUpActionResponseType = AuthActionResponseType & {
+  fieldErrors?: {
+    email?: string[];
+    password?: string[];
+    username?: string[];
+  };
 };

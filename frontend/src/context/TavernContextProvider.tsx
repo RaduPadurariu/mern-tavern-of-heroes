@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { TavernContext } from "./TavernContext";
 import type { TavernContextProviderType, UserType } from "../types/types";
-import { API_URL } from "../config/api";
+import { fetchMe } from "../api/fetchMe";
 
 export const TavernContextProvider = ({
   children,
@@ -9,31 +9,19 @@ export const TavernContextProvider = ({
   const [user, setUser] = useState<UserType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const refetchUser = useCallback(async (): Promise<void> => {
+  const refetchUser = useCallback(async (): Promise<UserType | null> => {
     setIsLoading(true);
-
     try {
-      const res: Response = await fetch(`${API_URL}/api/auth/me`, {
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        setUser(null);
-        return;
-      }
-
-      const data: UserType = await res.json();
-      setUser(data);
-    } catch (error) {
-      console.error("Auth fetch failed:", error);
-      setUser(null);
+      const user = await fetchMe();
+      setUser(user);
+      return user;
     } finally {
       setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    refetchUser();
+    void refetchUser();
   }, [refetchUser]);
 
   return (

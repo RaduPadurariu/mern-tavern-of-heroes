@@ -1,29 +1,39 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import SignUpForm from "./SignUpForm";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import {
   createMemoryRouter,
-  redirect,
   RouterProvider,
   type ActionFunction,
 } from "react-router";
 import userEvent from "@testing-library/user-event";
+
+const mockRefetchUser = vi.fn();
+const mockUseTavernContext = vi.fn();
+
+vi.mock("../../context/useContext", () => ({
+  useTavernContext: () => mockUseTavernContext(),
+}));
 
 function renderSignUp(action?: ActionFunction) {
   const router = createMemoryRouter(
     [
       {
         path: "/",
+        element: <div>Home Page</div>,
+      },
+      {
+        path: "/posts",
+        element: <div>Posts Page</div>,
+      },
+      {
+        path: "/register",
         element: <SignUpForm />,
         action,
       },
-      {
-        path: "/dashboard",
-        element: <div>Dashboard Page</div>,
-      },
     ],
     {
-      initialEntries: ["/"],
+      initialEntries: ["/register"],
     },
   );
 
@@ -31,6 +41,17 @@ function renderSignUp(action?: ActionFunction) {
 }
 
 describe("Register Form", () => {
+  beforeEach(() => {
+    mockRefetchUser.mockResolvedValue(null);
+    mockUseTavernContext.mockReturnValue({
+      refetchUser: mockRefetchUser,
+    });
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("render all form components", () => {
     renderSignUp();
 
@@ -43,9 +64,11 @@ describe("Register Form", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows validation errors when submit with empty fields", () => {
+  it("shows validation errors when submit with empty fields", async () => {
     renderSignUp();
-    fireEvent.click(screen.getByRole("button", { name: /Sign Up/i }));
+
+    await userEvent.click(screen.getByRole("button", { name: /Sign Up/i }));
+
     expect(screen.getByText(/Username is required./i)).toBeInTheDocument();
     expect(screen.getByText(/Email is required./i)).toBeInTheDocument();
     expect(screen.getByText(/Password is required./i)).toBeInTheDocument();
@@ -117,6 +140,7 @@ describe("Register Form", () => {
     expect(
       await screen.findByText(/Username already exists/i),
     ).toBeInTheDocument();
+    expect(mockRefetchUser).not.toHaveBeenCalled();
   });
 
   it("shows validation error when user email exists", async () => {
@@ -139,12 +163,20 @@ describe("Register Form", () => {
     expect(
       await screen.findByText(/Email already exists/i),
     ).toBeInTheDocument();
+    expect(mockRefetchUser).not.toHaveBeenCalled();
   });
 
-  it("submits successfully and redirects to dashboard", async () => {
-    const actionMock: ActionFunction = async () => {
-      return redirect("/dashboard");
-    };
+  it("submits successfully, refetches user and navigates home", async () => {
+    const actionMock: ActionFunction = async () => ({ ok: true });
+    mockRefetchUser.mockResolvedValue({
+      _id: "1",
+      username: "radutest",
+      email: "radu@example.com",
+      nickname: "",
+      gender: "",
+      heroClass: "",
+      avatar: "",
+    });
     renderSignUp(actionMock);
 
     await userEvent.type(screen.getByLabelText(/Username/i), "radutest");
@@ -155,6 +187,8 @@ describe("Register Form", () => {
       "Password1",
     );
     await userEvent.click(screen.getByRole("button", { name: /Sign Up/i }));
-    expect(await screen.findByText(/Dashboard Page/i)).toBeInTheDocument();
+
+    await waitFor(() => expect(mockRefetchUser).toHaveBeenCalledTimes(1));
+    expect(await screen.findByText(/Posts Page/i)).toBeInTheDocument();
   });
 });

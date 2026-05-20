@@ -1,4 +1,3 @@
-import { redirect } from "react-router";
 import { API_URL } from "../../config/api";
 
 export async function deleteUserAction() {
@@ -7,9 +6,9 @@ export async function deleteUserAction() {
     credentials: "include",
   });
 
-  if (!res.ok) {
+  if (res.status !== 204 && !res.ok) {
     throw new Response("Failed to delete account", { status: res.status });
   }
 
-  return redirect("/login");
+  return { ok: true };
 }

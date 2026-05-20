@@ -28,6 +28,7 @@ import AccountLayout from "../layouts/AccountLayout";
 import { authLoader } from "./loaders/authLoader";
 import { editPostLoader } from "./loaders/editPostLoader";
 import RootLayoutError from "../components/Errors/RootLayoutError";
+import { editUserLoader } from "./loaders/editUserLoader";
 
 export const router = createBrowserRouter([
   {
@@ -93,12 +94,16 @@ export const router = createBrowserRouter([
         ],
       },
       {
+        id: "account",
         path: "account",
         element: <AccountLayout />,
-        loader: authLoader,
-        action: deleteUserAction,
+        loader: editUserLoader,
         children: [
-          { index: true, element: <Account /> },
+          {
+            index: true,
+            element: <Account />,
+            action: deleteUserAction,
+          },
           {
             path: "edit-profile",
             element: <EditProfile />,

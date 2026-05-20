@@ -1,5 +1,5 @@
 import { redirect, type ActionFunctionArgs } from "react-router";
-import type { UpdateUserPayload } from "../../types/types";
+import type { UpdateUserPayloadType } from "../../types/types";
 import { API_URL } from "../../config/api";
 
 export async function editUserAction({ request }: ActionFunctionArgs) {
@@ -9,7 +9,7 @@ export async function editUserAction({ request }: ActionFunctionArgs) {
   const genderRaw = formData.get("gender")?.toString();
   const heroClass = formData.get("heroClass")?.toString();
 
-  const updatedUser: UpdateUserPayload = {};
+  const updatedUser: UpdateUserPayloadType = {};
 
   updatedUser.nickname = nickname?.trim() === "" ? null : nickname;
   updatedUser.heroClass = heroClass?.trim() === "" ? null : heroClass;

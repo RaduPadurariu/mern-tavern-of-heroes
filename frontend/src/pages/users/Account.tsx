@@ -1,11 +1,21 @@
 import { CgHello } from "react-icons/cg";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { Form, Link } from "react-router";
+import { Form, Link, useActionData, useNavigate } from "react-router";
+import { useEffect } from "react";
 import { useTavernContext } from "../../context/useContext";
 
 const Account = () => {
-  const { user } = useTavernContext();
+  const { user, setUser } = useTavernContext();
+  const actionData = useActionData() as { ok?: boolean };
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!actionData?.ok) return;
+    setUser(null);
+    navigate("/login");
+  }, [actionData?.ok, navigate, setUser]);
+
   return (
     <div className="tavern-container">
       <div className="pt-6 pb-10 px-10">

@@ -1,4 +1,4 @@
-import { Form, useActionData } from "react-router";
+import { Form, useActionData, useNavigate } from "react-router";
 import { useRegisterReducer } from "../../hooks/useRegisterReducer";
 import {
   checkConfirmPasswordSignUp,
@@ -6,18 +6,16 @@ import {
   checkPasswordSignUp,
   checkUsernameSignUp,
 } from "../../components/ValidationErrors";
+import { useTavernContext } from "../../context/useContext";
+import { useEffect } from "react";
+import type { SignUpActionResponseType } from "../../types/types";
 
 const SignUpForm = () => {
   const { state, dispatch } = useRegisterReducer();
-  const actionData = useActionData() as {
-    fieldErrors?: {
-      email?: string[];
-      password?: string[];
-      username: string[];
-    };
-    message?: string;
-    status?: number;
-  };
+  const actionData = useActionData<SignUpActionResponseType>();
+
+  const { refetchUser } = useTavernContext();
+  const navigate = useNavigate();
 
   const usernameErrors = state.isAfterSubmit
     ? checkUsernameSignUp(state.username)
@@ -51,8 +49,17 @@ const SignUpForm = () => {
       e.preventDefault();
       return;
     }
-    dispatch({ type: "IS_AFTER_SUBMIT", payload: false });
   };
+
+  useEffect(() => {
+    if (!actionData?.ok) return;
+    const sync = async () => {
+      const fetchedUser = await refetchUser();
+      if (fetchedUser) navigate("/posts");
+    };
+    void sync();
+  }, [actionData?.ok, navigate, refetchUser]);
+
   return (
     <Form className="" onSubmit={(e) => registerHandler(e)} method="post">
       <div className="mt-5">

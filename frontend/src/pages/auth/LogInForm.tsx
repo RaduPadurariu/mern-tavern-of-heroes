@@ -1,20 +1,18 @@
-import { Form, useActionData } from "react-router";
+import { Form, useActionData, useNavigate } from "react-router";
 import { useLoginReducer } from "../../hooks/useLoginReducer";
 import {
   checkEmailSignIn,
   checkPasswordSignIn,
 } from "../../components/ValidationErrors";
+import { useTavernContext } from "../../context/useContext";
+import { useEffect } from "react";
+import type { LoginActionResponseType } from "../../types/types";
 
 const LogInForm = () => {
   const { state, dispatch } = useLoginReducer();
-  const actionData = useActionData() as {
-    fieldErrors?: {
-      email?: string[];
-      password?: string[];
-    };
-    message?: string;
-    status?: number;
-  };
+  const actionData = useActionData<LoginActionResponseType>();
+  const { refetchUser } = useTavernContext();
+  const navigate = useNavigate();
 
   const emailErrors = state.isAfterSubmit ? checkEmailSignIn(state.email) : [];
   const passwordErrors = state.isAfterSubmit
@@ -32,6 +30,17 @@ const LogInForm = () => {
       return;
     }
   };
+
+  // if login is successful, refetch user and navigate to posts
+  useEffect(() => {
+    if (!actionData?.ok) return;
+    const sync = async () => {
+      const fetchedUser = await refetchUser();
+      if (fetchedUser) navigate("/posts");
+    };
+    void sync();
+  }, [actionData?.ok, navigate, refetchUser]);
+
   return (
     <Form className="" onSubmit={(e) => submitHandler(e)} method="post">
       <div className="mt-5">
